@@ -17,6 +17,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import *
 from sklearn.tree import DecisionTreeRegressor
 import pydot
+from joblib import dump
 # *********************************************************************************************************************
 # Import Data
 # Assign data in folder
@@ -131,7 +132,6 @@ plt.figure(3)
 ax = sns.heatmap(
     corr_matrix,
     vmin=-1, vmax=1, center=0,
-    cmap=sns.diverging_palette(20, 220, n=200),
     square=True
 )
 ax.set_xticklabels(
@@ -409,4 +409,7 @@ valid_actual_vs_predition = pd.DataFrame({'Actual': y_validation, 'Predicted': y
 
 # Export Predictions
 valid_actual_vs_predition.to_csv(os.path.join(out_fldr, 'predictions-validation.csv'))
+# *********************************************************************************************************************
+# Export trained model to a file
+dump(regressor_3, os.path.join(out_fldr, "Model_3.joblib"))
 # *********************************************************************************************************************
