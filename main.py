@@ -16,6 +16,7 @@ from sklearn import tree
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import *
 from sklearn.tree import DecisionTreeRegressor
+import pydot
 # *********************************************************************************************************************
 # Import Data
 # Assign data in folder
@@ -216,6 +217,8 @@ print("AUC: " + str(metrics.auc(fpr_1_test, tpr_1_test)))
 # Export visualization of tree
 tree.export_graphviz(regressor_1, out_file=os.path.join(out_fldr, "Model_1_tree.dot"),
                      feature_names=list(X_train.columns.values))
+(graph,) = pydot.graph_from_dot_file(os.path.join(out_fldr, "Model_1_tree.dot"))
+graph.write_png(os.path.join(out_fldr, "Model_1_tree.png"))
 
 # Timer End - Print Time
 print("Time to complete model: " + str(datetime.now().replace(microsecond=0) - time_strt))
@@ -255,6 +258,8 @@ print("AUC: " + str(metrics.auc(fpr_2_test, tpr_2_test)))
 # Export visualization of tree
 tree.export_graphviz(regressor_2, out_file=os.path.join(out_fldr, "Model_2_tree.dot"),
                      feature_names=list(X_train.columns.values))
+(graph,) = pydot.graph_from_dot_file(os.path.join(out_fldr, "Model_2_tree.dot"))
+graph.write_png(os.path.join(out_fldr, "Model_2_tree.png"))
 
 # Timer End - Print Time
 print("Time to complete model: " + str(datetime.now().replace(microsecond=0) - time_strt))
@@ -273,7 +278,7 @@ print("Model Type: Regression Based Decision Tree")
 time_strt = datetime.now().replace(microsecond=0)
 
 # Define Decision Tree Algorithm
-regressor_3 = DecisionTreeRegressor(max_depth=15, min_samples_leaf=250)
+regressor_3 = DecisionTreeRegressor(max_depth=15, min_samples_leaf=100)
 
 # Run Decision Tree
 regressor_3.fit(X_train, y_train)
@@ -292,6 +297,9 @@ print("AUC: " + str(metrics.auc(fpr_3_test, tpr_3_test)))
 # Export visualization of tree
 tree.export_graphviz(regressor_3, out_file=os.path.join(out_fldr, "Model_3_tree.dot"),
                      feature_names=list(X_train.columns.values))
+(graph,) = pydot.graph_from_dot_file(os.path.join(out_fldr, "Model_3_tree.dot"))
+graph.write_png(os.path.join(out_fldr, "Model_3_tree.png"))
+
 
 # Timer End - Print Time
 print("Time to complete model: " + str(datetime.now().replace(microsecond=0) - time_strt))
@@ -397,8 +405,8 @@ plt.show()
 # *********************************************************************************************************************
 # Export validation Preditions
 # Create a dataframe that has the validation partition pred vs actual
-valid_actual_vs_predition = pd.DataFrame({'Actual': y_valid_4_pred, 'Predicted': y_valid_4_pred})
+valid_actual_vs_predition = pd.DataFrame({'Actual': y_validation, 'Predicted': y_valid_3_pred})
 
 # Export Predictions
-valid_actual_vs_predition.to_csv(os.path.join(out_fldr, 'predictions.csv'))
+valid_actual_vs_predition.to_csv(os.path.join(out_fldr, 'predictions-validation.csv'))
 # *********************************************************************************************************************
